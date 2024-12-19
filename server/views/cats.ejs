@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/styles.css">
   <title>Random Cat Image</title>
 </head>
 <body>
@@ -19,15 +20,13 @@
     <button onclick="fetchCatImage()" class="button">
       <%= loading ? 'Loading...' : 'Get Cat Image' %>
     </button>
-    <% if (catImageUrl) { %>
-      <button onclick="favoriteCatImage()" class="button" style="margin-left: 10px;">Favorite</button>
-    <% } %>
-    <% if (favoriteMessage) { %>
-      <p><%= favoriteMessage %></p>
-    <% } %>
+    <button id="favorite-button" onclick="favoriteCatImage()" class="button" style="margin-left: 10px; display: none;">Favorite</button>
+    <button id="show-favorite-button" onclick="showFavoriteImage()" class="button" style="margin-left: 10px;">Show Favorite</button>
   </div>
 
   <script>
+    let currentImageUrl = '';
+
     async function fetchCatImage() {
       const response = await fetch('https://api.thecatapi.com/v1/images/search');
       const data = await response.json();
@@ -41,19 +40,59 @@
         document.getElementById('cat-image-container').appendChild(imgElement);
       }
       imgElement.src = imageUrl;
+      currentImageUrl = imageUrl;
+
+      // Show the favorite button
+      document.getElementById('favorite-button').style.display = 'inline-block';
+      document.getElementById('favorite-button').disabled = false;
     }
 
     async function favoriteCatImage() {
       const imageUrl = document.querySelector('.cat-image').src;
-      const response = await fetch('http://localhost:3000/cats', {
+      await fetch('/cats/favorite', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({ imageUrl, username: '<%= username %>' })
       });
-      const message = await response.text();
-      document.querySelector('.favorite-message').innerText = message;
+    }
+
+    async function showFavoriteImage() {
+      try {
+        console.log('Fetching favorite image...'); // Add this logging
+        const response = await fetch('/cats/getFavorite', {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json'
+          }
+        });
+
+        console.log('Response status:', response.status); // Add this logging
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log('Received data:', data); // Add this logging
+
+        if (data.favoriteImageUrl) {
+          let imgElement = document.querySelector('.cat-image');
+          if (!imgElement) {
+            imgElement = document.createElement('img');
+            imgElement.className = 'cat-image';
+            imgElement.alt = 'Favorite Cat';
+            document.getElementById('cat-image-container').appendChild(imgElement);
+          }
+          imgElement.src = data.favoriteImageUrl;
+        } else {
+          alert('No favorite image found');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Failed to load favorite image: ' + error.message);
+      }
     }
   </script>
 </body>

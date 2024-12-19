@@ -98,16 +98,40 @@ app.get('/cats', (req, res) => {
   res.render('cats', { username, catImageUrl: null, loading: false, favoriteMessage: null });
 });
 
-app.post('/cats', async (req, res) => {
+app.post('/cats/favorite', async (req, res) => {
   const { imageUrl, username } = req.body;
-  console.log('Favorite request received:', imageUrl);
+  console.log('Favorited request for:', imageUrl);
 
   try {
-    await database.query('UPDATE users SET FavoriteImage = $1 WHERE username = $2', [imageUrl, username]);
-    res.send('Image favorited successfully');
+    await database.query('UPDATE users SET favoriteimage = $1 WHERE username = $2', [imageUrl, username]);
+    res.sendStatus(200); // Send a success status
   } catch (err) {
     console.error('Error during favoriting image:', err);
     res.status(500).send('An error occurred: ' + err.message);
+  }
+});
+
+app.get('/cats/getFavorite', async (req, res) => {
+  console.log('GET /cats/getFavorite called'); // Add this logging
+  try {
+    const username = req.session.username;
+    console.log('Username from session:', username); // Add this logging
+    
+    const result = await database.query(
+      'SELECT favoriteimage FROM users WHERE username = $1',
+      [username]
+    );
+    
+    console.log('Query result:', result.rows); // Add this logging
+    
+    if (result.rows.length > 0) {
+      res.json({ favoriteImageUrl: result.rows[0].favoriteimage });
+    } else {
+      res.json({ favoriteImageUrl: null });
+    }
+  } catch (err) {
+    console.error('Error fetching favorite image:', err);
+    res.status(500).json({ error: 'Failed to fetch favorite image' });
   }
 });
 

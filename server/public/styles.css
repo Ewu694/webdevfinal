@@ -1,0 +1,164 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body, html {
+  height: 100%;
+  font-family: 'Arial', sans-serif;
+  background-color: #FAE8E0;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+
+h1 {
+  color: #EF7C8E;
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.title {
+  color: #EF7C8E;
+  font-size: 4rem;
+  text-align: center;
+}
+
+.title-link {
+  color: #B6E2D3;
+  font-weight: bold;
+  font-size: 1.5rem;
+  text-decoration: none;
+}
+
+.title-link:hover {
+  color: #D8A7B1;
+}
+
+.title-container,
+.cat-container,
+.form-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 90%;
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: #EED6D3;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.form input {
+  width: 100%;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background: #67595E;
+  color: #fff;
+  font-size: 1rem;
+}
+
+.form input::placeholder {
+  color: #ccc;
+}
+
+.form button {
+  width: 100%;
+  padding: 1rem;
+  font-size: 1.1rem;
+  background-color: #B6E2D3;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.form button:hover {
+  background-color: #A5D1C5;
+}
+
+.form p,
+.form a {
+  color: #D8A7B1;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.form a:hover {
+  color: #B6E2D3;
+}
+
+.error-message {
+  width: 100%;
+  padding: 1rem;
+  color: #fff;
+  background-color: #ff4d4d;
+  border-radius: 5px;
+  text-align: center;
+  font-size: 1rem;
+}
+
+.cat-image {
+  margin-top: 1.5rem;
+  max-width: 100%;
+  max-height: 300px;
+  width: auto;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.button {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  margin-top: 1rem;
+  cursor: pointer;
+  background-color: #EF7C8E;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.button:hover {
+  background-color: #D8A7B1;
+}
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 3rem;
+  }
+
+  .form input,
+  .form button {
+    font-size: 0.9rem;
+  }
+
+  .button {
+    font-size: 0.9rem;
+  }
+
+  .cat-container,
+  .form-container {
+    padding: 1.5rem;
+  }
+}
